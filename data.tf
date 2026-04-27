@@ -44,5 +44,11 @@ data "aws_security_group" "std4_ssh_sg" {
     }
 }
 
+# data "aws_launch_template" "std4_launch_template" {
+#     filter {
+#         name = "tag:Name"
+#         values = ["std4_launch_template"]
+#     }
+#}
 
 

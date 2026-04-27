@@ -21,7 +21,7 @@ resource "aws_launch_template" "std4_launch_template" {
   instance_type = "t3.micro"
   key_name = "std4-keypair"
 
-  vpc_security_group_ids = [data.aws_security_group.std4_ssh_sg.id]
+  vpc_security_group_ids = [aws_security_group.std4_ssh_sg.id]
 
 
   tag_specifications {
@@ -39,6 +39,10 @@ resource "aws_launch_template" "std4_launch_template" {
     }
 
   }
+  
+  # 버전에 대한 설명을 잊지 않기
+  update_default_version = true # 현재 만드는 버전을 새로운 버전으로 등록
+  description = "Launch Template"
 }
 
 # 오토스케일링 그룹 생성
@@ -82,8 +86,9 @@ resource "aws_autoscaling_group" "std4_asg" {
 
 # 오토스케일 그룹 인스턴스 조정 기준
 resource "aws_autoscaling_policy" "std4_asg_policy" {
+    count = 1
     name = "std4-asg-policy"
-    autoscaling_group_name = aws_autoscaling_group.std4_asg.name
+    autoscaling_group_name = aws_autoscaling_group.std4_asg[count.index].name
     # 대상 추적 유형 - StepScaling : 지표가 특정 임계값을 초과할 때 단계적으로 조정, SimpleScaling :  지표가 특정 임계값을 초과할 때 단일 조정, PredictiveScaling : 과거 지표를 기반으로 미래 수요 예측하여 조정
     policy_type = "TargetTrackingScaling" # 특정 지표가 목표값을 유지하도록 자동으로 조정
 
@@ -91,7 +96,7 @@ resource "aws_autoscaling_policy" "std4_asg_policy" {
       predefined_metric_specification {
         predefined_metric_type = "ASGAverageCPUUtilization"
       }
-      target_value = 50.0
+    target_value = 50.0 # (50 ~ 70권장)
 
     }
 }
