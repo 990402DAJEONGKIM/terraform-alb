@@ -1,5 +1,5 @@
 # 대상 그룹 지정
-resource "aws_lb_targer_group" "std4_docker_main_tg" {
+resource "aws_lb_target_group" "std4_docker_main_tg" {
     name = "std4_docker_main_tg"
     port = 8080 # **도커 컴포즈 기준: docker run -p 8080:80 ** 
     protocol = "HTTP"
@@ -30,6 +30,12 @@ resource "aws_lb_targer_group" "std4_docker_main_tg" {
 
 
 # 대상 그룹 인스턴스 등록
-
+resource "aws_lb_target_group_attachment" "std4_lb_target_group_attachment" {
+    count = 1
+    # 어느 대상그룹을 등록할 것인가?
+    target_group_arn = aws_lb_target_group.std4_docker_main_tg.arn
+    target_id - aws_instance.std4_instance[count.index].id
+    port = 8080 # 대상 그룹의 포트와 일치해야함
+}
 
 # 

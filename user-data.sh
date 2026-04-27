@@ -27,9 +27,8 @@ mkdir -p /opt/std4-alb-project && cd /opt/std4-alb-project
 # wget https://raw.githubusercontent.com/csjin21c/lab-repo/refs/heads/main/docker-compose-alb.yaml
 
 # 본인 깃허브 주소로 변경
-wget https://raw.githubusercontent.com/csjin21c/lab-repo/refs/heads/main/docker-compose-alb.yaml
+wget https://raw.githubusercontent.com/990402DAJEONGKIM/terraform-alb/refs/heads/main/yaml/docker-compose.yaml
 
-# 5. 컨테이너 실행
 # --pull always를 통해 인스턴스 생성 시점에 가장 최신 이미지를 가져옵니다.
 docker compose -f docker-compose-alb.yaml up -d --pull always
 
