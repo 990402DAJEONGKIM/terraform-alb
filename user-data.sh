@@ -30,7 +30,7 @@ mkdir -p /opt/std4-alb-project && cd /opt/std4-alb-project
 wget https://raw.githubusercontent.com/990402DAJEONGKIM/terraform-alb/refs/heads/main/yaml/docker-compose.yaml
 
 # --pull always를 통해 인스턴스 생성 시점에 가장 최신 이미지를 가져옵니다.
-docker compose -f docker-compose-alb.yaml up -d --pull always
+docker compose -f docker-compose.yaml up -d --pull always
 
 # 6. 완료 플래그 생성
 # touch 대신 이렇게 쓰면 날짜와 시간이 파일 안에 기록됩니다.

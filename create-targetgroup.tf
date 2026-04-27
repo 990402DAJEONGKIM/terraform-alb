@@ -1,0 +1,73 @@
+# 대상 그룹 지정
+resource "aws_lb_target_group" "std4_docker_main_tg" {
+    name = "std4-docker-main-tg"
+    port = 8080 # **도커 컴포즈 기준: docker run -p 8080:80 ** 
+    protocol = "HTTP"
+    vpc_id = data.aws_vpc.std4_vpc.id
+
+    # 인스턴스가 처음 시작하여 접속 시 비율을 점진적으로 증가할 여유 시간
+    slow_start = 30
+    # 인스턴스 ㅓ종료 시 기존 연결 유지 시간
+    deregistration_delay = 30
+
+    # 헬스 체크
+    health_check{
+        path = "/"
+        protocol = "HTTP"
+        interval = 30 # 30초 마다 헬스 체크
+        timeout = 5  # 5초안에 응답이 없으면 실패로 간주
+        healthy_threshold = 2
+        unhealthy_threshold = 3
+        }
+    tags = {
+        Name = "std4_docker_main_tg"
+    }
+}
+
+
+# 대상 그룹 인스턴스 등록
+resource "aws_lb_target_group_attachment" "std4_lb_target_group_attachment" {
+    count = 1
+    # 어느 대상그룹을 등록할 것인가?
+    target_group_arn = aws_lb_target_group.std4_docker_main_tg.arn
+    target_id = aws_instance.std4_instance[count.index].id
+    port = 8080 # 대상 그룹의 포트와 일치해야함
+}
+
+# ===================================================================================================
+# 대상 그룹 지정
+resource "aws_lb_target_group" "std4_docker_install_tg" {
+    name = "std4-docker-install-tg"
+    port = 8081 # **도커 컴포즈 기준: docker run -p 8080:80 ** 
+    protocol = "HTTP"
+    vpc_id = data.aws_vpc.std4_vpc.id
+
+    # 인스턴스가 처음 시작하여 접속 시 비율을 점진적으로 증가할 여유 시간
+    slow_start = 30
+    # 인스턴스 ㅓ종료 시 기존 연결 유지 시간
+    deregistration_delay = 30
+
+    # 헬스 체크
+    health_check{
+        path = "/"
+        protocol = "HTTP"
+        interval = 30 # 30초 마다 헬스 체크
+        timeout = 5  # 5초안에 응답이 없으면 실패로 간주
+        healthy_threshold = 2
+        unhealthy_threshold = 3
+        }
+    tags = {
+        Name = "std4_docker_install_tg"
+    }
+}
+
+
+# 대상 그룹 인스턴스 등록
+resource "aws_lb_target_group_attachment" "std4_lb_install_target_group_attachment" {
+    count = 1
+    # 어느 대상그룹을 등록할 것인가?
+    target_group_arn = aws_lb_target_group.std4_docker_install_tg.arn
+    target_id = aws_instance.std4_instance[count.index].id
+    port = 8081 # 대상 그룹의 포트와 일치해야함
+}
+# ===================================================================================================

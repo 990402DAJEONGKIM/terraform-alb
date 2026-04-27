@@ -1,32 +1,39 @@
 #!/bin/bash
-# 6개 nginx 컨테이너 한번에 도커 이미지 만드는 쉘 스크립트
 
-# 에러 발생 시 즉시 중단 (안정성 확보)
+# 6개 nginx 컨테이너 빌드 및 도커 허브 푸시 통합 스크립트
+
 set -e
 
-# 서비스 리스트
 SERVICES=("main" "install" "command" "build" "compose" "swarm")
 TAG="1.29.7"
 USER="dajeongkim"
 
-# 스크립트 파일이 위치한 실제 경로를 파악 (어디서 실행하든 안전하게)
 BASE_DIR=$(dirname "$0")
+
+echo "------------------------------------------------"
+echo "도커 빌드 및 푸시 작업을 시작합니다."
+echo "------------------------------------------------"
 
 for SVC in "${SERVICES[@]}"
 do
-    echo "------------------------------------------"
-    echo "Building image for: $USER/nginx:$TAG-docker-$SVC"
-    echo "------------------------------------------"
-    
-    # 실제 Dockerfile이 있는 경로 지정 (./build-all/$SVC)
+    IMAGE_NAME="$USER/nginx:$TAG-docker-$SVC"
+    # 폴더 경로를 정확히 맞추기 위해 다시 확인
     TARGET_DIR="$BASE_DIR/$SVC"
     
     if [ -d "$TARGET_DIR" ]; then
-        docker build -t $USER/nginx:$TAG-docker-$SVC "$TARGET_DIR"
-        # docker push $USER/nginx:$TAG-docker-$SVC
+        echo ">>> [$SVC] 작업 중..."
+        
+        # 1. 빌드
+        docker build -t "$IMAGE_NAME" "$TARGET_DIR"
+        
+        # 2. 푸시
+        docker push "$IMAGE_NAME"
+        
+        echo "✅ 완료: $IMAGE_NAME"
     else
-        echo "경고: $TARGET_DIR 폴더를 찾을 수 없습니다. 건너뜁니다."
+        echo "❌ 실패: $TARGET_DIR 폴더를 찾을 수 없습니다."
     fi
 done
 
-echo "모든 이미지 빌드 완료!"
+echo "------------------------------------------------"
+echo "모든 작업이 끝났습니다! 이제 EC2에서 다시 시도해 보세요."
