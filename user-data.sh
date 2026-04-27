@@ -23,7 +23,10 @@ systemctl enable --now docker
 usermod -aG docker ec2-user
 
 # 4. 프로젝트 디렉토리 설정 및 파일 다운로드
-mkdir -p /opt/ian-alb-project && cd /opt/ian-alb-project
+mkdir -p /opt/std4-alb-project && cd /opt/std4-alb-project
+# wget https://raw.githubusercontent.com/csjin21c/lab-repo/refs/heads/main/docker-compose-alb.yaml
+
+# 본인 깃허브 주소로 변경
 wget https://raw.githubusercontent.com/csjin21c/lab-repo/refs/heads/main/docker-compose-alb.yaml
 
 # 5. 컨테이너 실행

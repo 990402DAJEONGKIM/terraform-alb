@@ -2,7 +2,7 @@
 services:
   # main 서비스 (Nginx)
   service-docker-main:
-    image: csjin21c/nginx:1.29.7-docker-main
+    image: dajeongkim/nginx:1.29.7-docker-main
     container_name: docker-main-nginx-container
     restart: always
     ports:
@@ -12,7 +12,7 @@ services:
 
   # docker-install (Nginx)
   service-docker-install:
-    image: csjin21c/nginx:1.29.7-docker-install
+    image: dajeongkim/nginx:1.29.7-docker-install
     container_name: docker-install-nginx-container
     restart: always
     ports:
@@ -22,7 +22,7 @@ services:
 
   # docker-command (Nginx)
   service-docker-command:
-    image: csjin21c/nginx:1.29.7-docker-command
+    image: dajeongkim/nginx:1.29.7-docker-command
     container_name: docker-command-nginx-container
     restart: always
     ports:
@@ -32,7 +32,7 @@ services:
 
   # docker-build (Nginx)
   service-docker-build:
-    image: csjin21c/nginx:1.29.7-docker-build
+    image: dajeongkim/nginx:1.29.7-docker-build
     container_name: docker-build-nginx-container
     restart: always
     ports:
@@ -42,7 +42,7 @@ services:
 
   # docker-compose (Nginx)
   service-docker-compose:
-    image: csjin21c/nginx:1.29.7-docker-compose
+    image: dajeongkim/nginx:1.29.7-docker-compose
     container_name: docker-compose-nginx-container
     restart: always
     ports:
@@ -52,7 +52,7 @@ services:
 
   # docker-swarm (Nginx)
   service-docker-swarm:
-    image: csjin21c/nginx:1.29.7-docker-swarm
+    image: dajeongkim/nginx:1.29.7-docker-swarm
     container_name: docker-swarm-nginx-container
     restart: always
     ports:

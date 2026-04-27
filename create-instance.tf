@@ -19,6 +19,7 @@ resource "aws_instance" "std4_instance" {
 
   vpc_security_group_ids = [
     data.aws_security_group.std4_ssh_sg.id
+    data.aws_security_group.std4_web_sg.id
   ]
 
   # 볼륨 지정
