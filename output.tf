@@ -1,19 +1,37 @@
-output "vpc_id" {
+output "std4_region" {
+    value=data.aws_region.std4_region
+}
+
+
+output "std4_vpc" {
     value = data.aws_vpc.std4_vpc.id
 }
 
-output "public_subnet" {
-    value = data.aws_subnets.std4_public_subnets.ids[0]
+output "std4_availability_zones" {
+    value = data.aws_availability_zones.std4_availability_zones.names
 }
 
-output "private_subnet" {
-    value = data.aws_subnets.std4_private_subnets.ids[0]
+output "std4_subnets" {
+    value = data.aws_subnets.std4_subnets.ids
+}
+
+output "std4_subnet_ids" {
+   value = local.my_subnets
 }
 
 
-output "web_sg_id" {
-    value = data.aws_security_group.std4_web_sg.id
-}
+# output "public_subnet" {
+#     value = data.aws_subnets.std4_public_subnets.ids[0]
+# }
+
+# output "private_subnet" {
+#     value = data.aws_subnets.std4_private_subnets.ids[0]
+# }
+
+
+# output "web_sg_id" {
+#     value = data.aws_security_group.std4_web_sg.id
+# }
 
 # output "az_names" {
 #     value = data.availability_zones.available.names
