@@ -62,23 +62,44 @@ resource "aws_security_group" "std4_ssh_sg" {
 } 
 
 # web용 보안그룹 생성
+# HTTP 및 HTTPS용 보안그룹 생성
 resource "aws_security_group" "std4_web_sg" {
-       name = "std4_web_sg"
-       vpc_id = aws_vpc.std4_vpc.id
-       description = "Allow http for web(nginx)"
+  name        = "std4_web_sg"
+  vpc_id      = aws_vpc.std4_vpc.id
+  description = "Allow HTTP and HTTPS for web services"
 
-       tags = {
-              Name = "std4_web_sg"
-       }
+  # HTTP (80포트) 허용
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTP from anywhere"
+  }
 
-       egress {
-              from_port = 0  # 모든 포트
-              to_port = 0    # 모든 포트
-              protocol = "-1" # 모든 프로토콜
-              cidr_blocks = ["0.0.0.0/0"]
-       }
+  # HTTPS (443포트) 허용
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTPS from anywhere"
+  }
 
-} 
+  # 아웃바운드 규칙 (모든 곳으로 나감)
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "std4_web_sg"
+  }
+}
+
+
 
 # # 보안 그룹 규칙 생성 (alb와 http를 연결해주는 징검다리 역할을 함)
 # resource "aws_security_group_rule" "std4_sg_rule" {
